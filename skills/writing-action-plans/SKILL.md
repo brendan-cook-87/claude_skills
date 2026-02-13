@@ -19,7 +19,7 @@ Generic guideline — this skill defines how Claude Code should operate across a
 
 ### Tasks
 - Each task must include detailed **acceptance criteria**. Another agent will execute the task and must be able to determine when it is complete and when it is successful.
-- Each task must include a robust **test plan**. Cover all edge cases. Present a table showing all input combinations and expected results.
+- Each task must include a **how to test** section. See the **test-driven-development** skill for test plan standards.
 
 ### Results Summary Section (bottom of the plan)
 - How many tasks succeeded vs. failed.
@@ -34,6 +34,8 @@ Generic guideline — this skill defines how Claude Code should operate across a
 - **additional context**:
 - **acceptance criteria**:
 - **how to test**:
+- **commit strategy**:
+- **evidence of success**:
 - **status**:
 - **attempts to complete**:
 - **notes**:
@@ -48,14 +50,27 @@ Generic guideline — this skill defines how Claude Code should operate across a
 - **tool used to detect**:
 - **acceptance criteria**:
 - **how to test**:
+- **commit strategy**:
+- **evidence of success**:
 - **status**:
 - **attempts to complete**:
 - **notes**:
 
+## Evidence of Success
+
+The **evidence of success** field is mandatory for any task or finding marked as **success** ✅. It must contain the actual output (or a meaningful excerpt) from the test command specified in **how to test**.
+
+- The executing agent is responsible for running the test command and pasting the output into this field.
+- A task must **never** be marked as **success** ✅ if this field is empty or missing.
+- If the test command fails, paste the failure output here instead — the task status should be **failure** ❌ or remain **in progress** 🔧.
+- Acceptable evidence includes: compilation output, test runner output, linter output, or command exit status with relevant context.
+
+This field exists to prevent agents from claiming success without actually verifying their work.
+
 ## Statuses
 
-- **todo** :construction:
-- **in progress** :wrench:
-- **success** :white_check_mark:
-- **unfixed review finding** :interrobang:
-- **failure** :x:
+- **todo** 🚧
+- **in progress** 🔧
+- **success** ✅
+- **unfixed review finding** ⁉️
+- **failure** ❌
