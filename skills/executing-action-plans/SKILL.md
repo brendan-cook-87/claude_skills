@@ -1,29 +1,24 @@
 # Executing Action Plans
 
 ## Skill Style
-Generic guideline — this skill defines how Claude Code should operate when executing tasks from an action plan. Test-driven development is **mandatory** for all work.
+Generic guideline — this skill defines how Claude Code should orchestrate the execution of tasks from an action plan.
 
 ## General Guidelines
 
-- **Always** follow a test-driven development approach.
-- If you believe TDD is unimportant for a task (e.g. prototyping that won't reach production), **STOP** and ask the developer if they agree before skipping it.
+- **Spawn a new agent** to work on each task from the action plan.
+- Follow the **test-driven-development** skill for all implementation work.
+- You may attempt a task up to **3 times** before marking it as failed and moving on.
 
-## Test-Driven Development Process
+## Agent Task Workflow
 
-1. **Write tests first** — before implementing any new code or attempting a fix.
-2. **Confirm the test fails** (or the tool reproduces the finding) before attempting the fix.
-3. **Implement the change** to make the test pass.
-4. **Confirm the test passes** (or the tool no longer produces the finding) after the change.
+Each spawned agent must follow this process:
 
-## Failing Tests
-
-- **Always** prioritize fixing the code to make a failing test pass.
-- **Never** disable or modify a failing test to make it pass.
-- If you believe there is a genuine exception, ask the developer to confirm before touching the test.
-
-## Test Plans
-
-- Before implementing any new functionality, present a **test plan** to the developer for review.
-- Format the test plan neatly — use **tables** to clearly present combinations of inputs for different cases and expected results.
-- Document all cases and edge cases that need testing.
-- When writing an action plan, include the test plan in the **how to test** section of each task.
+1. Mark the task status as **in progress** 🔧.
+2. Read the task description, acceptance criteria, and test plan carefully.
+3. If there is **any ambiguity**, **stop** and ask for clarification before proceeding.
+4. Implement the task following the **test-driven-development** skill.
+5. Run any relevant **type checkers**, **linters**, and **unit tests**.
+6. Update the task **status** to either **success** ✅ or **failure** ❌.
+7. Update the **attempts to complete** field to reflect the number of attempts taken.
+8. Provide detailed **notes** on the work done — and any errors that explain why an approach failed.
+9. Make a **single commit** for the task.

@@ -1,26 +1,28 @@
 # Test Driven Development
 
 ## Skill Style
-Generic guideline — this skill defines how Claude Code should operate when executing tasks from an action plan.
+Generic guideline — this skill defines the test-driven development methodology that must be followed during all implementation work. It is applied during task execution — see the **executing-action-plans** skill for how tasks are orchestrated.
 
 ## General Guidelines
 
-- Always **spawn a new agent** to work on each task from an action plan.
-- You may attempt to have an agent work on a task up to **3 times** before moving on and leaving it as failed.
+- TDD is **mandatory** for all implementation work.
+- If you believe TDD is unimportant for a task (e.g. prototyping that won't reach production), **STOP** and ask the developer if they agree before skipping it.
 
-## Agent Task Workflow
+## TDD Process
 
-Each spawned agent must follow this process:
+1. **Write tests first** — before implementing any new code or attempting a fix.
+2. **Confirm the test fails** (or the tool reproduces the finding) before attempting the fix.
+3. **Implement the change** to make the test pass.
+4. **Confirm the test passes** (or the tool no longer produces the finding) after the change.
 
-1. Mark the task status as **in progress** :wrench:.
-2. Read the task description carefully.
-3. If there is **any ambiguity**, **stop** and ask for clarification before proceeding.
-4. Attempt to fix/implement the task using a **test-driven development** approach:
-   - Write or update tests first.
-   - Implement the change to make the tests pass.
-5. Run the tests to confirm the fix.
-6. Run any relevant **type checkers**, **linters**, and **unit tests**.
-7. Update the task **status** to either **success** :white_check_mark: or **failure** :x:.
-8. Update the **attempts to complete** field to reflect the number of attempts taken.
-9. Provide detailed **notes** on the fix attempted — and any errors that explain why an approach failed.
-10. Make a **single commit** for the task.
+## Failing Tests
+
+- **Always** prioritize fixing the code to make a failing test pass.
+- **Never** disable or modify a failing test to make it pass.
+- If you believe there is a genuine exception, ask the developer to confirm before touching the test.
+
+## Test Plans
+
+- Before implementing any new functionality, present a **test plan** to the developer for review.
+- Format the test plan neatly — use **tables** to clearly present combinations of inputs and expected results.
+- Document all cases and edge cases that need testing.

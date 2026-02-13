@@ -5,13 +5,17 @@ Generic guideline — this skill defines how Claude Code should operate. Always 
 
 ## General Guidelines
 
-- Run **all unit tests**.
-- Run **all code quality tools** available in the repo (linters, type checkers, etc.).
-- Run **all checks** available in the PR review toolkit — proactively address findings rather than waiting for review feedback.
+- Run **all unit tests**, **linters**, and **type checkers** as documented in the project's `CLAUDE.md` (see the **project-setup** skill).
+- Run the following **pr-review-toolkit** checks — proactively address findings rather than waiting for review feedback:
+  - `code-reviewer`
+  - `comment-analyzer`
+  - `pr-test-analyzer`
+  - `silent-failure-hunter`
+  - `type-design-analyzer`
 
 ## Production Readiness Workflow
 
-1. Run all tests, linters, type checkers, and PR review checks.
+1. Run all tests, linters, type checkers, and the pr-review-toolkit checks listed above.
 2. Create an **action plan** for all findings, including steps to resolve them.
 3. Store the action plan in `.plans/<branch>/<topic>.md` following the standard action plan format.
 4. **STOP.** Do **not** proceed with fixes yet.
