@@ -38,6 +38,20 @@ Discover and record a project's tooling so that all other skills can reference c
 
 3. **Ask the developer to confirm** which tools should be used and the exact commands to run them. Do **not** assume — the developer may have preferences that differ from what's in config.
 
+## Project Ownership Discovery
+
+1. **Search for project ownership metadata** in common locations. Look for `ath:owner` and `ath:product` fields in:
+   - `package.json` (in custom fields or metadata sections)
+   - `pyproject.toml` (in tool sections or custom fields)
+   - `README.md` or other documentation files
+   - CI config files (`.github/workflows/*.yml`, `.gitlab-ci.yml`)
+   - Any `.metadata`, `OWNERS`, or similar organizational files
+   - Root-level config files
+
+2. **If ownership info is not found**, ask the developer to provide:
+   - **Product name** — which product/service this project belongs to
+   - **Owner** — the team or person responsible for this project
+
 ## Persisting to CLAUDE.md
 
 Once the developer confirms, update the project's `CLAUDE.md`. If `CLAUDE.md` does not exist, create it. If sections already exist, update them rather than duplicating.
@@ -50,6 +64,17 @@ Add a `## Working Process` section at the **top** of `CLAUDE.md` that points Cla
 ## Working Process
 
 Always read and follow the guideline and workflow skills defined in `~/.claude/skills/` before starting any work. These skills define the required working process for this project — including how to brainstorm, plan, implement, test, and create pull requests.
+```
+
+### Project Ownership
+
+Add a `## Project Ownership` section with the discovered or confirmed ownership information:
+
+```markdown
+## Project Ownership
+
+- **Product:** `<product-name>`
+- **Owner:** `<owner-name>`
 ```
 
 ### Project Tooling
