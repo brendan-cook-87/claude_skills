@@ -5,21 +5,25 @@ Generic guideline — this skill defines how Claude Code should operate when cre
 
 ## General Guidelines
 
-- Do **not** create a PR until the code has been prepared for production.
+- Do **not** create a PR until the code has been prepared for production via the **preparing-code-for-production** skill.
 - Before generating a PR description, read all relevant context:
-  - Design documents under `.designs/<branch>/`
-  - Action plans under `.plans/<branch>/`
+  - Design documents under `.claude/designs/<branch>/`
+  - Action plans under `.claude/plans/<branch>/`
 
-## PR Description
+## Workflow
 
-The PR description should include:
+1. Generate the PR description markdown (see format below).
+2. Create a **draft** PR with the generated description.
+3. **STOP.** Provide the PR link to the developer. Do **not** mark it as ready for review.
+
+## PR Description Format
 
 ### High-Level Overview
 - A clear summary of what the change does and why.
 
 ### Diagrams
 - Include diagrams where useful for context.
-- Format diagrams so they **render on GitHub**.
+- Embed diagrams as **images** (`.png`) rather than inline Mermaid code blocks, so they render on both GitHub and Bitbucket.
 
 ### Clarifying Questions
 - Document questions asked of the developer that help the reviewer understand the PR. Focus on questions that:

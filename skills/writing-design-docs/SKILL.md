@@ -13,10 +13,10 @@ Generic guideline — this skill defines how Claude Code should operate. Always 
 
 ## Storage
 
-- Store design documents in `.designs/<branch>/<topic>.md`.
-- Store design diagrams in `.diagrams/`:
-  - `.diagrams/<topic>_<diagram_type>.mmd` — Mermaid source
-  - `.diagrams/<topic>_<diagram_type>.png` — rendered image
+- Store design documents in `.claude/designs/<branch>/<topic>.md`.
+- Store design diagrams in `.claude/diagrams/`:
+  - `.claude/diagrams/<topic>_<diagram_type>.mmd` — Mermaid source
+  - `.claude/diagrams/<topic>_<diagram_type>.png` — rendered image
 
 ## Diagrams
 

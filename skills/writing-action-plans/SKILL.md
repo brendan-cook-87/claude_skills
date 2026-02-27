@@ -6,7 +6,7 @@ Generic guideline — this skill defines how Claude Code should operate across a
 ## General Guidelines
 
 - Create an action plan **before** starting any piece of work.
-- Store action plans in `.plans/<branch>/<topic>.md`.
+- Store action plans in `.claude/plans/<branch>/<topic>.md`.
 - If an action plan already exists for a topic, **append** new tasks to it. Never edit existing tasks or their statuses. Never delete a plan.
 - Break work into the smallest possible tasks. Each task should be a single, atomic unit — implementing one function, fixing one bug, fixing one class of error.
 - Always record user questions and answers in the plan.
