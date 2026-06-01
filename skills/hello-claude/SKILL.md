@@ -32,15 +32,18 @@ Initialize a new Claude Code session by verifying project setup and establishing
 
 1. **Read the global skills** referenced in CLAUDE.md Working Process section
 2. **Summarize the workflow** for the user:
-   - **Brainstorm** → **Plan** → **Implement** → **Prepare for Production** → **Create PR**
-   - Each phase requires explicit developer approval before proceeding
-   - Extended thinking is required during Brainstorm and Plan phases
+   - **Assess Scope** → Minor / Medium / Feature
+   - **Minor:** implement directly with TDD
+   - **Medium:** create standalone action plan → implement → PR
+   - **Feature:** `/brainstorm` → epic (design → tickets → detail) → implement → PR
+   - Each stage of brainstorm requires explicit developer approval
+   - Implementation uses the three-agent protocol (implementer → reviewer → architect)
    - Test-driven development is mandatory
 
 3. **Highlight key principles:**
-   - Be curious and collaborative - ask questions, present options
+   - Be curious and collaborative — ask questions, present options
    - Challenge assumptions while maintaining collaborative approach
-   - Get developer approval at each phase transition
+   - Get developer approval at each stage gate
    - Follow organizational standards (naming conventions, security practices)
 
 ### 3. Context Gathering
@@ -48,8 +51,8 @@ Initialize a new Claude Code session by verifying project setup and establishing
 **Understand the current project state:**
 
 1. **Check git status** to see any work in progress
-2. **Look for existing design docs** in `.designs/` directory
-3. **Look for existing action plans** in `.plans/` directory
+2. **Look for existing epics** in `./epics/` directory
+3. **Look for existing standalone plans** in `.claude/plans/` directory
 4. **Check for any background context** the developer wants to share
 
 ### 4. Session Readiness
@@ -58,28 +61,28 @@ Initialize a new Claude Code session by verifying project setup and establishing
 
 1. **Summarize findings** about project setup and current state
 2. **Ask the developer** what they'd like to work on in this session
-3. **Remind about the working process** - starting with brainstorming if it's a new feature/change
+3. **Remind about scope assessment** — determine if this is minor, medium, or feature-level work
 4. **Offer to help** with any immediate questions or clarifications
 
 ## Example Output
 
 ```
-🚀 Hello! Starting new Claude Code session.
+Hello! Starting new Claude Code session.
 
-✅ Project Setup Status:
+Project Setup Status:
 - CLAUDE.md found with all required sections
 - Product: user-service (Owner: platform-team)
 - Tooling configured: npm test, npm run lint, npm run type-check
 
-📋 Working Process Reminder:
-- Phase-based workflow: Brainstorm → Plan → Implement → Prepare → PR
-- Each phase needs your explicit approval before proceeding
-- I'll use extended thinking during brainstorming and planning
-- Test-driven development is mandatory for implementation
+Working Process Reminder:
+- Scope assessment first: minor (direct TDD) / medium (action plan) / feature (/brainstorm)
+- Features go through: design → tickets → detail, each reviewed before you see it
+- Implementation uses three-agent protocol with structured evidence requirements
+- Your explicit approval required at every stage gate
 
-📁 Current Project State:
+Current Project State:
 - Working tree is clean
-- No active design docs or plans found
+- No active epics or plans found
 - Ready for new work
 
 What would you like to work on in this session?
@@ -90,7 +93,7 @@ What would you like to work on in this session?
 If project setup is incomplete, provide clear guidance:
 
 ```
-⚠️  Project Setup Required
+Project Setup Required
 
 CLAUDE.md is missing the Project Tooling section. Before we can start any work,
 I need to run the project-setup skill to:

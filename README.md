@@ -18,76 +18,86 @@ This copies all skills from `skills/` into `~/.claude/skills/`.
 
 | Skill | Purpose |
 |---|---|
-| **Curious and Collaborative** | Behavioral baseline applied to all tasks. Prioritizes collaboration, asks early questions, and defers architectural and business decisions to the developer. |
-| **Brainstorming** | Guides how Claude approaches new feature requests. Presents multiple options with tradeoffs before committing to an approach. |
-| **Writing Design Documents** | Defines when and how to produce design documents for large work. Focuses on business context and high-level technical approach, with Mermaid diagrams. |
-| **Writing Action Plans** | Defines how to break work into small, atomic tasks with detailed acceptance criteria and test plans. |
-| **Executing Action Plans** | Defines a strict test-driven development process for implementing tasks from an action plan. |
-| **Test-Driven Development** | Defines how agents should work through action plan tasks — including status tracking, retries, and per-task commits. |
-| **Preparing Code for Production** | Defines the quality gate before any PR: run all tests, linters, and checks, then create a plan for any findings. |
-| **Creating a PR** | Defines PR description standards: high-level overview, diagrams, clarifying Q&A, test plans, and code quality confirmation. |
+| **General Working Process** | Top-level orchestration — assess scope, route to the right workflow. |
+| **Curious and Collaborative** | Behavioral baseline. Prioritizes collaboration, asks early questions, defers architectural and business decisions to the developer. |
+| **Brainstorm** | Produces fully-specified epics through three stages: design → ticket breakdown → ticket detailing. Each stage is reviewed by planning agents before engineer approval. |
+| **Writing Action Plans** | Defines the task format used in all action plans — explicit instructions, concrete validation, evidence of success. |
+| **Executing Action Plans** | Three-agent execution protocol (implementer → reviewer → architect) with structured output templates that enforce evidence-based reasoning. |
+| **Test-Driven Development** | Mandatory TDD methodology — write tests first, confirm red, implement, confirm green. |
+| **Preparing Code for Production** | Quality gate before any PR: run all checks, create a findings plan, get developer approval. |
+| **Creating a PR** | PR description standards: overview, diagrams, clarifying Q&A, test plans, code quality confirmation. |
+| **Hello Claude** | Session initialization — verifies project setup, summarizes workflow. |
+| **Project Setup** | Discovers project tooling, explores the codebase, ensures CLAUDE.md is complete. |
 
 ## Workflow
 
-The skills define a sequential workflow for implementing new features. Each phase requires explicit developer approval before moving to the next.
+The skills define a workflow for implementing new features. Scope is assessed first, and work is routed appropriately.
 
 ```
-Brainstorm --> Design --> Plan --> Implement --> Production Review --> PR
+Project Setup Check
+        │
+        ▼
+Assess Scope ──── minor ──── implement directly (TDD) ──── PR
+        │
+        ├── medium ──── action plan ──── implement (three-agent) ──── Prepare ──── PR
+        │
+        └── feature ──── /brainstorm
+                            │
+                            ├── Stage 1: Design (review cycle → engineer approval)
+                            ├── Stage 2: Tickets (review cycle → engineer approval)
+                            └── Stage 3: Detail (review cycle → engineer approval)
+                                    │
+                                    ▼
+                              Implement (three-agent protocol per ticket)
+                                    │
+                                    ▼
+                              Prepare for Production
+                                    │
+                                    ▼
+                              Create PR
 ```
 
-### 1. Brainstorm
+### Scope Assessment
 
-When asked to work on a new feature, Claude starts by asking questions — not writing code. It presents multiple approaches with tradeoffs and lets the developer choose a direction. No implementation begins until the developer explicitly says to proceed.
+- **Minor** (typo fix, one-line bug fix, config tweak) — implement directly with TDD. No plan needed.
+- **Medium** (single-ticket scope, clear requirements) — create a standalone action plan at `.claude/plans/<branch>/<topic>.md`, execute with the three-agent protocol.
+- **Feature** (design decisions needed, multiple components) — run the full `/brainstorm` workflow.
 
-### 2. Design Document
+### Brainstorm (Feature Workflow)
 
-For work that involves architectural decisions, Claude writes a design document before any planning or implementation. Design documents are stored in `.designs/<branch>/` and focus on business context and high-level technical approach. Diagrams are authored in Mermaid (`.diagrams/<topic>_<type>.mmd`) and rendered to PNG.
+The brainstorm skill produces a self-contained epic folder:
 
-Small changes may skip this step — Claude will ask the developer whether a design is warranted.
+```
+./epics/<topic>/
+├── design.md              (Stage 1 — problem, approach, architecture)
+├── epic.md                (Stage 2 — ticket list with acceptance criteria)
+└── tickets/
+    ├── 01-<ticket-slug>.md  (Stage 3 — full action plan per ticket)
+    ├── 02-<ticket-slug>.md
+    └── ...
+```
 
-### 3. Action Plan
+Each stage goes through a review cycle (creator → planning reviewer → planning architect) before being presented to the engineer. The engineer only reviews polished output and makes decisions on genuinely ambiguous requirements.
 
-Before implementation, Claude creates an action plan in `.plans/<branch>/`. Work is broken into the smallest possible atomic tasks. Each task includes:
+### Three-Agent Execution
 
-- A clear description
-- Detailed acceptance criteria
-- A test plan with input/output tables covering edge cases
+All implementation (whether from epics or standalone plans) uses the three-agent protocol:
 
-Claude stops after writing the plan and waits for the developer to review and approve it.
+1. **Implementer** — executes each task following a structured template (TDD evidence, claims with verification)
+2. **Reviewer** — assesses completed work against ticket acceptance criteria
+3. **Architect** — corroborates reviewer findings, prevents false positives from triggering unnecessary rework
 
-### 4. Implementation (Test-Driven Development)
-
-Tasks are executed using strict TDD:
-
-1. Write tests first.
-2. Confirm the tests fail.
-3. Implement the change.
-4. Confirm the tests pass.
-
-Each task is worked on by a spawned agent (up to 3 attempts). On completion, the agent updates the task status and makes a single commit. Failing tests are never disabled or modified to pass — the code is fixed instead.
-
-### 5. Production Readiness
-
-After implementation, Claude runs all tests, linters, type checkers, and available review checks. Any findings are captured in a new action plan. Claude stops and presents the plan to the developer for approval before making fixes.
-
-### 6. Pull Request
-
-Only after the code passes all quality gates does Claude create a PR. The description includes:
-
-- A high-level overview of the change
-- Diagrams where useful
-- Relevant questions and answers from the development process
-- Test plans and which unit tests cover them
-- Confirmation that all code quality checks pass
+Non-compliant agent output is rejected and re-dispatched. Only confirmed findings trigger fixes.
 
 ### Throughout: Curious and Collaborative
 
-Across every phase, Claude operates with a collaborative mindset:
+Across every phase:
 
 - Asks insightful questions early to surface hidden assumptions
 - Uses multiple-choice questions wherever possible
 - Defers to the developer on architecture and business context
 - Never proceeds through ambiguity
+- Challenges assumptions while maintaining collaborative approach
 
 ## Project Structure
 
@@ -95,6 +105,7 @@ Across every phase, Claude operates with a collaborative mindset:
 skills/                  # Skill definitions (installed to ~/.claude/skills/)
   <skill-name>/
     SKILL.md             # The skill file Claude Code reads
-prompts/                 # Source/draft prompt files
+    templates/           # Structured output templates (where applicable)
+prompts/                 # Concise prompt references pointing to SKILL.md files
 install.sh               # Copies skills to ~/.claude/skills/
 ```

@@ -17,8 +17,10 @@ Generic guideline — this skill defines how Claude Code should operate. Always 
 
 1. Run all tests, linters, type checkers, and the pr-review-toolkit checks listed above.
 2. Create an **action plan** for all findings, including steps to resolve them.
-3. Store the action plan in `.claude/plans/<branch>/<topic>.md` following the standard action plan format.
+3. Store the action plan at `.claude/plans/<branch>/production-prep.md` following the `writing-action-plans` format.
 4. **STOP.** Do **not** proceed with fixes yet.
 5. Link the developer to the created action plan file and ask them to review it.
 6. **Wait for explicit confirmation** that the plan looks good before proceeding.
-7. Only once the developer has given explicit instructions to proceed, follow the standard steps to implement the action plan.
+7. Once approved, execute the action plan using the `executing-action-plans` three-agent protocol.
+
+This workflow applies regardless of whether the code came from an epic (feature) or a standalone action plan (medium-scope work). Production prep findings always get their own standalone plan — they are not appended to epic ticket files.

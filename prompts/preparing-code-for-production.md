@@ -1,19 +1,23 @@
 ### Preparing Code for Production
 
 ## Skill Style
-This skill is a generic guideline for how you, claude code, should operate.
+This skill is a generic guideline for how you, Claude Code, should operate.
 
 ## General Guidelines
-You should always ensure that code is prepared properly for production before attempting to create any PR.
-To do this you should:
-  - ensure you run all unit tests
-  - run all code quality tools available in this repo (think: linters, type checkers etc.)
-  - run all checks available in the pr review toolkit (we want to proactively address these).
+Always ensure code is properly prepared for production before creating any PR.
 
-And you should create an action plan for all findings which include steps to resolve them.
-Then STOP.  
-Ensure you have followed the action plan steps to put it in the appropriate folder.
-Ask the human developer to review the action plan (just link them to the created file) and wait for them to confirm
-it looks good before proceeding.
+## Workflow
 
-Only once you have received explicit instructions to proceed should you follow all the standard steps to implement this action plan.
+1. Run all **unit tests**, **linters**, and **type checkers** as documented in CLAUDE.md.
+2. Run the following **pr-review-toolkit** checks:
+   - `code-reviewer`
+   - `comment-analyzer`
+   - `pr-test-analyzer`
+   - `silent-failure-hunter`
+   - `type-design-analyzer`
+3. Create an **action plan** for all findings (in `.claude/plans/<branch>/<topic>.md` following the `writing-action-plans` format).
+4. **STOP.** Link the developer to the action plan and ask them to review.
+5. Only proceed with fixes once the developer gives explicit approval.
+6. Execute fixes using the `executing-action-plans` three-agent protocol.
+
+See `skills/preparing-code-for-production/SKILL.md` for full details.

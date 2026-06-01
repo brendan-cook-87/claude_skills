@@ -7,8 +7,8 @@ Generic guideline — this skill defines how Claude Code should operate when cre
 
 - Do **not** create a PR until the code has been prepared for production via the **preparing-code-for-production** skill.
 - Before generating a PR description, read all relevant context:
-  - Design documents under `.claude/designs/<branch>/`
-  - Action plans under `.claude/plans/<branch>/`
+  - Epic folder under `./epics/<topic>/` (design document, epic breakdown, ticket files)
+  - Any standalone action plans under `.claude/plans/<branch>/`
 
 ## Workflow
 
